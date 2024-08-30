@@ -4,27 +4,35 @@ provider "aws" {
 }
 
 resource "aws_instance" "demo-server" {
-  ami = "ami-04fdea8e25817cd69"
+  ami = "ami-0ecaad63ed3668fca"
   instance_type = "t2.micro"
-  key_name = "demokey"
-  vpc_security_group_ids = [aws_security_group.demo-sg.id]
+  key_name = "demonewkey"
+  vpc_security_group_ids = [aws_security_group.demonew-sg.id]
   subnet_id = aws_subnet.dpw-public_subnet_01.id
-# Adding 3 servers jenkins master for CI/CD, build slave for maven and docker and ansible master for configuration
+# Adding 3 servers jenkins master for CI/CD, build slave for maven and docker, ansible master for configuration
   for_each = toset(["Jenkins-master", "Build-slave", "Ansible"])
    tags = {
      Name = "${each.key}"
    }
 }
 
-
-resource "aws_security_group" "demo-sg" {
-  name        = "demo-sg"
+resource "aws_security_group" "demonew-sg" {
+  name        = "demonew-sg"
   description = "ssh access"
   vpc_id =aws_vpc.dpw-vpc.id
 
   ingress {
+    description      = "for ssh-access"
     from_port        = 22
     to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+    ingress {
+    description      = "for jenkins port" 
+    from_port        = 8080
+    to_port          = 8080
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
   }
@@ -106,5 +114,3 @@ resource "aws_route_table_association" "dpw-rta-public-subent-2" {
     subnet_id = aws_subnet.dpw-public_subnet_02.id
     route_table_id = aws_route_table.dpw-public-rt.id
 }
-
-
