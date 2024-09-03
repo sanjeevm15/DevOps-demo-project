@@ -2,18 +2,18 @@
 - hosts: Build-slave
   become: true
   tasks:
-  - name: install java 
+  - name: Install Java
     apt:
-     name: openjdk-17-jre
-     state: present
+      name: openjdk-17-jre
+      state: present
 
-  - name: download maven  
+  - name: Download Maven
     get_url: 
-     url: https://dlcdn.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz
-     dest: /opt
+      url: https://dlcdn.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz
+      dest: /opt/apache-maven-3.9.9-bin.tar.gz
 
-  - name: Extract packages 
-    unarchive: https://dlcdn.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz
-     src: /opt/apache-maven-3.9.1-bin.tar.gz
-     dest: /opt 
-     remote_src: yes 
+  - name: Extract Maven package
+    unarchive:
+      src: /opt/apache-maven-3.9.9-bin.tar.gz
+      dest: /opt/apache-maven
+      remote_src: yes
