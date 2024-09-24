@@ -1,0 +1,68 @@
+docker commands 
+
+-docker images
+-docker pull and docker push 
+-docker run -dt --name ttrend -p 8000:8000 sanjeev14.jfrog.io/demorepo-docker-local/ttrend:2.1.2
+
+-docker ps -a  --> to check container name 
+
+
+kubernetes commands:
+
+NOTE - To install kubernetes 
+install kubectl and ekscctl from AWS docs and install
+AWS Iam authenticator from AWS docs and try change 
+the .kube/config file with v1beta1 api it will connect to cluster
+and all kubectl commands will work 
+
+Kubectl get all  -- gives all(pods, service, deployment, replicaset )
+
+kubectl create namespace (name)
+kubectl delete namespace (name)
+kubectl get all -n namespace -- to get all namespace resource details
+
+kubectl get deploymnet/deploy  -- give app deployed detail
+
+kubectl get nodes -- give all created node list 
+
+eksctl cluster info   -- give cluster detail
+
+kubectl create deployment demo-nginx --image=nginx --port=80 --replicas=2   -- create pods and put containerized app inside it based on number of replicas which denotes the count of containerized app pods 
+
+kubectl expose deployment demo-nginx --port=80 --type=LoadBalancer  -- used to create service (Loadbalancer)  to expose the containerized app to the user with the given port 
+
+kubectl get replicaset -- give replicaset details
+
+kubectl get pods - give pods details
+
+kubectl describe pod <pod-name> -n <namespace>-- to get pod status for error or success
+
+kubectl logs pod/demo-rtp-6f668f77cd-8v2rr -n demo-dev -- to get logs of pod status     
+
+kubectl delete deployment demo-rtp -n demo-dev
+-- to delete deploymnet 
+
+kubectl delete service/demo-nginx -- to delete service file
+
+kubectl apply -f <file-name>.yaml  -- to apply file config in kube cluster
+
+Labels present in pod and Selector present in Service(LB) 
+Selector tag will cross check its given name in the pod's label tag name if both matched will route the usert requets to the macthing pod containing same selector name in service 
+
+kubectl get pod -o wide -- give pod info with ip details  used to  identify node info 
+kubectl get pod -o wide -n demo-dev  --for specific name space ips
+
+kubectl get ns -- will give name space details by default it will have 4 ns
+
+secrest command  :
+kubectl get secrets -n <namespace>
+kubectl describe secret Jfrogartifact-cred -n demo-dev
+kubectl delete secret Jfrogartifact-cred -n demo-dev
+
+
+
+##to check and update eks cluster with current server user level add this command --it will help to connect with ekscluster with remote server 
+aws eks update-kubeconfig --region us-west-1 --name democluster-eks-01
+
+aws eks describe-cluster --name democluster-eks-01 --query 'cluster.status'
+
